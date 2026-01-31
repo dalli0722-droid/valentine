@@ -13,63 +13,71 @@
   }
   .card{
     position: relative;
-    background: white; padding: 28px 22px; width:min(520px, 92vw);
-    border-radius: 18px; box-shadow: 0 10px 35px rgba(0,0,0,.12);
+    background: white; padding: 28px 22px; width:min(680px, 92vw);
+    border-radius: 22px; box-shadow: 0 10px 35px rgba(0,0,0,.12);
     text-align:center;
     overflow: hidden;
   }
-  h1{ margin: 0 0 10px; font-size: 34px; font-weight: 800; }
-  p{ margin: 0 0 20px; color:#444; font-size: 20px; }
+  h1{ margin: 0 0 10px; font-size: 48px; font-weight: 900; }
+  p{ margin: 0 0 22px; color:#444; font-size: 24px; }
 
-  .btns{
+  /* Button area */
+  .arena{
     position: relative;
-    height: 120px;              /* gives space for the No button to jump around */
+    width: min(520px, 92vw);
+    height: 140px;          /* space for No to jump around */
+    margin: 0 auto;
+  }
+
+  /* initial side-by-side layout container */
+  .row{
+    position: absolute;
+    inset: 0;
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:16px;
-    margin-top: 8px;
+    gap: 18px;
   }
 
   button{
     border:0;
-    padding: 14px 22px;
-    border-radius: 14px;
-    font-size: 18px;
+    padding: 16px 26px;
+    border-radius: 16px;
+    font-size: 20px;
     cursor:pointer;
     transition: transform .08s ease;
     user-select: none;
+    box-shadow: 0 10px 22px rgba(0,0,0,.10);
   }
   button:active{ transform: scale(.98); }
 
   #yes{
-    background:#ff3b7a; color:white;
-    min-width: 120px;
+    background:#ff3b7a;
+    color:white;
+    min-width: 150px;
+    z-index: 2; /* keep yes visually on top just in case */
   }
 
+  /* sad-looking No */
   #no{
-    background:#f1f1f1; color:#111;
-    min-width: 120px;
-
-    /* allow us to move it around inside .btns */
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    background: #cfd6e6;              /* sad blue-gray */
+    color: #1f2a44;
+    min-width: 150px;
   }
 
+  /* message */
   .msg{
     height: 22px;
     font-size: 16px;
-    color: #c4002f;
-    margin-top: 10px;
+    color: #2b3a67;
+    margin-top: 12px;
     opacity: 0;
     transition: opacity .15s ease;
   }
   .msg.show{ opacity: 1; }
 
   .hidden{ display:none; }
-  .yay{ font-size: 26px; font-weight: 800; }
+  .yay{ font-size: 28px; font-weight: 900; }
 </style>
 </head>
 
@@ -79,9 +87,12 @@
     <h1>Will you be my Valentine? 💘</h1>
     <p>I’ve been wanting to ask you this…</p>
 
-    <div class="btns" id="arena">
-      <button id="yes">Yes 💖</button>
-      <button id="no">No 😔</button>
+    <div class="arena" id="arena">
+      <!-- initial side-by-side row -->
+      <div class="row" id="row">
+        <button id="yes">Yes 💖</button>
+        <button id="no">No 😔</button>
+      </div>
     </div>
 
     <div class="msg" id="msg">Wrong answer 😅 Try again</div>
@@ -98,9 +109,12 @@
   const yes = document.getElementById('yes');
   const no = document.getElementById('no');
   const arena = document.getElementById('arena');
+  const row = document.getElementById('row');
   const msg = document.getElementById('msg');
   const s1 = document.getElementById('screen1');
   const s2 = document.getElementById('screen2');
+
+  let noIsFree = false;
 
   function showWrongAnswer(){
     msg.classList.add('show');
@@ -108,41 +122,82 @@
     window.__msgTimer = setTimeout(() => msg.classList.remove('show'), 900);
   }
 
-  function moveNoButton(){
-    // Arena dimensions
-    const a = arena.getBoundingClientRect();
-    const b = no.getBoundingClientRect();
+  function detachNoToArena(){
+    // After first "No" click: take No out of the flex row and allow free movement
+    if (noIsFree) return;
+    noIsFree = true;
 
-    const padding = 6;
-    const maxX = a.width - b.width - padding;
-    const maxY = a.height - b.height - padding;
+    // Remove from row and append directly to arena
+    row.removeChild(no);
+    arena.appendChild(no);
 
-    // Keep it within bounds
-    const x = Math.max(padding, Math.random() * maxX);
-    const y = Math.max(padding, Math.random() * maxY);
-
-    no.style.left = `${x}px`;
-    no.style.top  = `${y}px`;
-    no.style.transform = 'translate(0, 0)';
+    // Make it absolutely positioned inside arena
+    no.style.position = 'absolute';
+    no.style.left = '0px';
+    no.style.top = '0px';
   }
 
-  // On NO click: show message + move button somewhere else
+  function moveNoButton(){
+    const a = arena.getBoundingClientRect();
+    const b = no.getBoundingClientRect();
+    const y = yes.getBoundingClientRect();
+
+    // Convert yes button position into arena-local coords
+    const yesBox = {
+      left: y.left - a.left,
+      top:  y.top  - a.top,
+      right: (y.left - a.left) + y.width,
+      bottom:(y.top  - a.top) + y.height
+    };
+
+    const padding = 8;
+    const maxX = Math.max(padding, a.width - b.width - padding);
+    const maxY = Math.max(padding, a.height - b.height - padding);
+
+    // Avoid placing the No button overlapping the Yes button (with extra margin)
+    const buffer = 14;
+    const maxTries = 60;
+
+    function overlapsYes(x, yPos){
+      const noBox = {
+        left: x,
+        top: yPos,
+        right: x + b.width,
+        bottom: yPos + b.height
+      };
+      return !(
+        noBox.right < (yesBox.left - buffer) ||
+        noBox.left  > (yesBox.right + buffer) ||
+        noBox.bottom< (yesBox.top - buffer) ||
+        noBox.top   > (yesBox.bottom + buffer)
+      );
+    }
+
+    let x, yPos, tries = 0;
+    do {
+      x = padding + Math.random() * (maxX - padding);
+      yPos = padding + Math.random() * (maxY - padding);
+      tries++;
+      // if the arena is too small, break to prevent infinite loop
+      if (tries > maxTries) break;
+    } while (overlapsYes(x, yPos));
+
+    no.style.left = `${x}px`;
+    no.style.top  = `${yPos}px`;
+  }
+
+  // NO click: show message + (first time) free the button + move it
   no.addEventListener('click', () => {
     showWrongAnswer();
+    detachNoToArena();
     moveNoButton();
   });
 
-  // Optional: also move when hovered (makes it playful). Remove if you don't want.
-  // no.addEventListener('mouseenter', moveNoButton);
-
-  // On YES: go to success screen
+  // YES click: success screen
   yes.addEventListener('click', () => {
     s1.classList.add('hidden');
     s2.classList.remove('hidden');
   });
-
-  // Start with a slightly random position
-  moveNoButton();
 </script>
 </body>
 </html>
