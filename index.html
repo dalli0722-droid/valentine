@@ -11,25 +11,39 @@
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     background: radial-gradient(circle at top, #ffe3ee, #fff);
   }
+
   .card{
     position: relative;
-    background: white; padding: 28px 22px; width:min(680px, 92vw);
-    border-radius: 22px; box-shadow: 0 10px 35px rgba(0,0,0,.12);
+    background: white;
+    padding: 28px 22px;
+    width: min(860px, 92vw);
+    border-radius: 22px;
+    box-shadow: 0 10px 35px rgba(0,0,0,.12);
     text-align:center;
     overflow: hidden;
   }
-  h1{ margin: 0 0 10px; font-size: 48px; font-weight: 900; }
-  p{ margin: 0 0 22px; color:#444; font-size: 24px; }
+
+  h1{
+    margin: 0 0 10px;
+    font-size: 54px;
+    font-weight: 900;
+  }
+
+  p{
+    margin: 0 0 22px;
+    color:#444;
+    font-size: 24px;
+  }
 
   /* Button area */
   .arena{
     position: relative;
     width: min(520px, 92vw);
-    height: 140px;          /* space for No to jump around */
+    height: 170px;          /* space for No to jump */
     margin: 0 auto;
   }
 
-  /* initial side-by-side layout container */
+  /* initial side-by-side row */
   .row{
     position: absolute;
     inset: 0;
@@ -55,17 +69,17 @@
     background:#ff3b7a;
     color:white;
     min-width: 150px;
-    z-index: 2; /* keep yes visually on top just in case */
+    z-index: 2; /* keep Yes above visually */
   }
 
-  /* sad-looking No */
+  /* Sad-looking No */
   #no{
-    background: #cfd6e6;              /* sad blue-gray */
+    background: #cfd6e6;   /* sad blue-gray */
     color: #1f2a44;
     min-width: 150px;
   }
 
-  /* message */
+  /* wrong answer message */
   .msg{
     height: 22px;
     font-size: 16px;
@@ -88,7 +102,7 @@
     <p>I’ve been wanting to ask you this…</p>
 
     <div class="arena" id="arena">
-      <!-- initial side-by-side row -->
+      <!-- initial side-by-side layout -->
       <div class="row" id="row">
         <button id="yes">Yes 💖</button>
         <button id="no">No 😔</button>
@@ -122,78 +136,64 @@
     window.__msgTimer = setTimeout(() => msg.classList.remove('show'), 900);
   }
 
-  function detachNoToArena(){
-    // After first "No" click: take No out of the flex row and allow free movement
+  function detachNo(){
     if (noIsFree) return;
     noIsFree = true;
 
-    // Remove from row and append directly to arena
+    // Remove No from the flex row and add it directly to arena
     row.removeChild(no);
     arena.appendChild(no);
 
-    // Make it absolutely positioned inside arena
+    // Now allow it to move freely inside arena
     no.style.position = 'absolute';
-    no.style.left = '0px';
-    no.style.top = '0px';
   }
 
   function moveNoButton(){
     const a = arena.getBoundingClientRect();
-    const b = no.getBoundingClientRect();
+    const n = no.getBoundingClientRect();
     const y = yes.getBoundingClientRect();
 
-    // Convert yes button position into arena-local coords
-    const yesBox = {
-      left: y.left - a.left,
-      top:  y.top  - a.top,
-      right: (y.left - a.left) + y.width,
-      bottom:(y.top  - a.top) + y.height
-    };
+    // Yes position relative to arena
+    const yesTop = y.top - a.top;
+    const yesBottom = yesTop + y.height;
 
-    const padding = 8;
-    const maxX = Math.max(padding, a.width - b.width - padding);
-    const maxY = Math.max(padding, a.height - b.height - padding);
+    const padding = 10;
 
-    // Avoid placing the No button overlapping the Yes button (with extra margin)
-    const buffer = 14;
-    const maxTries = 60;
+    const maxX = Math.max(padding, a.width - n.width - padding);
+    const maxY = Math.max(padding, a.height - n.height - padding);
 
-    function overlapsYes(x, yPos){
-      const noBox = {
-        left: x,
-        top: yPos,
-        right: x + b.width,
-        bottom: yPos + b.height
-      };
-      return !(
-        noBox.right < (yesBox.left - buffer) ||
-        noBox.left  > (yesBox.right + buffer) ||
-        noBox.bottom< (yesBox.top - buffer) ||
-        noBox.top   > (yesBox.bottom + buffer)
-      );
-    }
+    // Forbidden vertical zone = Yes zone + buffer
+    const buffer = 24;
+    const forbiddenTop = yesTop - buffer;
+    const forbiddenBottom = yesBottom + buffer;
 
-    let x, yPos, tries = 0;
+    let x, yPos;
+    let tries = 0;
+
+    // Pick a random spot that is fully OUTSIDE the forbidden vertical band
     do {
       x = padding + Math.random() * (maxX - padding);
       yPos = padding + Math.random() * (maxY - padding);
       tries++;
-      // if the arena is too small, break to prevent infinite loop
-      if (tries > maxTries) break;
-    } while (overlapsYes(x, yPos));
+
+      // Accept only if No is fully above or fully below Yes band
+      if (yPos + n.height < forbiddenTop || yPos > forbiddenBottom) {
+        break;
+      }
+    } while (tries < 120);
 
     no.style.left = `${x}px`;
-    no.style.top  = `${yPos}px`;
+    no.style.top = `${yPos}px`;
   }
 
-  // NO click: show message + (first time) free the button + move it
+  // NO: show message + free the button (first time) + move it
   no.addEventListener('click', () => {
     showWrongAnswer();
-    detachNoToArena();
+    detachNo();
     moveNoButton();
   });
 
-  // YES click: success screen
+  // YES: go to success screen
   yes.addEventListener('click', () => {
     s1.classList.add('hidden');
     s2.classList.remove('hidden');
