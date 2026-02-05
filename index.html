@@ -30,7 +30,7 @@
   }
 
   p{
-    margin: 0 0 22px;
+    margin: 0 0 16px;
     color:#444;
     font-size: 24px;
   }
@@ -39,11 +39,10 @@
   .arena{
     position: relative;
     width: min(520px, 92vw);
-    height: 170px;          /* space for No to jump */
+    height: 170px;
     margin: 0 auto;
   }
 
-  /* initial side-by-side row */
   .row{
     position: absolute;
     inset: 0;
@@ -69,17 +68,15 @@
     background:#ff3b7a;
     color:white;
     min-width: 150px;
-    z-index: 2; /* keep Yes above visually */
+    z-index: 2;
   }
 
-  /* Sad-looking No */
   #no{
-    background: #cfd6e6;   /* sad blue-gray */
+    background: #cfd6e6;
     color: #1f2a44;
     min-width: 150px;
   }
 
-  /* wrong answer message */
   .msg{
     height: 22px;
     font-size: 16px;
@@ -92,6 +89,66 @@
 
   .hidden{ display:none; }
   .yay{ font-size: 28px; font-weight: 900; }
+
+  /* Message form */
+  .note{
+    margin: 14px auto 0;
+    width: min(620px, 92vw);
+    text-align: left;
+    background: #fff7fb;
+    border: 1px solid #ffd3e2;
+    border-radius: 16px;
+    padding: 14px;
+  }
+
+  .note label{
+    display:block;
+    font-size: 14px;
+    color:#333;
+    margin: 10px 0 6px;
+  }
+
+  .note input, .note textarea{
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #e6b6c6;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    background: white;
+  }
+
+  .metaRow{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .counterRow{
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    margin-top: 8px;
+    font-size: 13px;
+    color:#555;
+  }
+
+  .smallBtn{
+    padding: 10px 14px;
+    font-size: 16px;
+    border-radius: 12px;
+    background: #111;
+    color: #fff;
+    box-shadow: 0 10px 22px rgba(0,0,0,.10);
+  }
+
+  .status{
+    margin-top: 8px;
+    font-size: 14px;
+    color:#1f2a44;
+    min-height: 18px;
+  }
 </style>
 </head>
 
@@ -102,7 +159,6 @@
     <p>I’ve been wanting to ask you this…</p>
 
     <div class="arena" id="arena">
-      <!-- initial side-by-side layout -->
       <div class="row" id="row">
         <button id="yes">Yes 💖</button>
         <button id="no">No 😔</button>
@@ -110,6 +166,32 @@
     </div>
 
     <div class="msg" id="msg">Wrong answer 😅 Try again</div>
+
+    <!-- NEW: Message box that sends to you -->
+    <form class="note" id="messageForm" action="PASTE_FORM_ENDPOINT_HERE" method="POST">
+      <div style="font-weight:800; margin-bottom:6px;">Leave me a message 💌</div>
+
+      <div class="metaRow">
+        <div>
+          <label for="name">Name (optional)</label>
+          <input id="name" name="name" maxlength="40" placeholder="Your name" />
+        </div>
+        <div>
+          <label for="email">Email (optional)</label>
+          <input id="email" name="email" type="email" maxlength="120" placeholder="you@example.com" />
+        </div>
+      </div>
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="4" placeholder="Type something sweet…" required></textarea>
+
+      <div class="counterRow">
+        <div id="wordCount">0/50 words</div>
+        <button class="smallBtn" type="submit">Send 💌</button>
+      </div>
+
+      <div class="status" id="status"></div>
+    </form>
   </div>
 
   <!-- YES SCREEN -->
@@ -139,12 +221,8 @@
   function detachNo(){
     if (noIsFree) return;
     noIsFree = true;
-
-    // Remove No from the flex row and add it directly to arena
     row.removeChild(no);
     arena.appendChild(no);
-
-    // Now allow it to move freely inside arena
     no.style.position = 'absolute';
   }
 
@@ -153,50 +231,82 @@
     const n = no.getBoundingClientRect();
     const y = yes.getBoundingClientRect();
 
-    // Yes position relative to arena
     const yesTop = y.top - a.top;
     const yesBottom = yesTop + y.height;
 
     const padding = 10;
-
     const maxX = Math.max(padding, a.width - n.width - padding);
     const maxY = Math.max(padding, a.height - n.height - padding);
 
-    // Forbidden vertical zone = Yes zone + buffer
     const buffer = 24;
     const forbiddenTop = yesTop - buffer;
     const forbiddenBottom = yesBottom + buffer;
 
-    let x, yPos;
-    let tries = 0;
+    let x, yPos, tries = 0;
 
-    // Pick a random spot that is fully OUTSIDE the forbidden vertical band
     do {
       x = padding + Math.random() * (maxX - padding);
       yPos = padding + Math.random() * (maxY - padding);
       tries++;
-
-      // Accept only if No is fully above or fully below Yes band
-      if (yPos + n.height < forbiddenTop || yPos > forbiddenBottom) {
-        break;
-      }
+      if (yPos + n.height < forbiddenTop || yPos > forbiddenBottom) break;
     } while (tries < 120);
 
     no.style.left = `${x}px`;
     no.style.top = `${yPos}px`;
   }
 
-  // NO: show message + free the button (first time) + move it
   no.addEventListener('click', () => {
     showWrongAnswer();
     detachNo();
     moveNoButton();
   });
 
-  // YES: go to success screen
   yes.addEventListener('click', () => {
     s1.classList.add('hidden');
     s2.classList.remove('hidden');
+  });
+
+  // NEW: word limit + sending status
+  const maxWords = 50;
+  const message = document.getElementById("message");
+  const wordCount = document.getElementById("wordCount");
+  const form = document.getElementById("messageForm");
+  const status = document.getElementById("status");
+
+  function updateCount(){
+    const words = message.value.trim().split(/\s+/).filter(Boolean);
+    if (words.length > maxWords) {
+      message.value = words.slice(0, maxWords).join(" ");
+    }
+    const wordsNow = message.value.trim().split(/\s+/).filter(Boolean).length;
+    wordCount.textContent = `${wordsNow}/${maxWords} words`;
+  }
+
+  message.addEventListener("input", updateCount);
+  updateCount();
+
+  // Optional: submit without leaving the page (AJAX)
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    status.textContent = "Sending…";
+
+    try {
+      const res = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { "Accept": "application/json" }
+      });
+
+      if (res.ok) {
+        status.textContent = "Sent! 💖";
+        form.reset();
+        updateCount();
+      } else {
+        status.textContent = "Oops—couldn’t send. Try again.";
+      }
+    } catch (err) {
+      status.textContent = "Network error. Please try again.";
+    }
   });
 </script>
 </body>
