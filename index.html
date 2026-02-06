@@ -30,7 +30,7 @@
   }
 
   p{
-    margin: 0 0 16px;
+    margin: 0 0 22px;
     color:#444;
     font-size: 24px;
   }
@@ -39,10 +39,11 @@
   .arena{
     position: relative;
     width: min(520px, 92vw);
-    height: 170px;
+    height: 170px;          /* space for No to jump */
     margin: 0 auto;
   }
 
+  /* initial side-by-side row */
   .row{
     position: absolute;
     inset: 0;
@@ -64,19 +65,20 @@
   }
   button:active{ transform: scale(.98); }
 
-  #yes{
+  .yesBtn{
     background:#ff3b7a;
     color:white;
     min-width: 150px;
     z-index: 2;
   }
 
-  #no{
+  .noBtn{
     background: #cfd6e6;
     color: #1f2a44;
     min-width: 150px;
   }
 
+  /* wrong answer message */
   .msg{
     height: 22px;
     font-size: 16px;
@@ -89,148 +91,111 @@
 
   .hidden{ display:none; }
   .yay{ font-size: 28px; font-weight: 900; }
-
-  /* Message form */
-  .note{
-    margin: 14px auto 0;
-    width: min(620px, 92vw);
-    text-align: left;
-    background: #fff7fb;
-    border: 1px solid #ffd3e2;
-    border-radius: 16px;
-    padding: 14px;
-  }
-
-  .note label{
-    display:block;
-    font-size: 14px;
-    color:#333;
-    margin: 10px 0 6px;
-  }
-
-  .note input, .note textarea{
-    width: 100%;
-    padding: 12px;
-    border-radius: 12px;
-    border: 1px solid #e6b6c6;
-    font-size: 16px;
-    outline: none;
-    box-sizing: border-box;
-    background: white;
-  }
-
-  .metaRow{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .counterRow{
-    display:flex;
-    justify-content: space-between;
-    align-items:center;
-    margin-top: 8px;
-    font-size: 13px;
-    color:#555;
-  }
-
-  .smallBtn{
-    padding: 10px 14px;
-    font-size: 16px;
-    border-radius: 12px;
-    background: #111;
-    color: #fff;
-    box-shadow: 0 10px 22px rgba(0,0,0,.10);
-  }
-
-  .status{
-    margin-top: 8px;
-    font-size: 14px;
-    color:#1f2a44;
-    min-height: 18px;
-  }
 </style>
 </head>
 
 <body>
-  <!-- MAIN SCREEN -->
-  <div class="card" id="screen1">
-    <h1>Will you be my Valentine? 💘</h1>
-    <p>I’ve been wanting to ask you this…</p>
 
-    <div class="arena" id="arena">
-      <div class="row" id="row">
-        <button id="yes">Yes 💖</button>
-        <button id="no">No 😔</button>
+  <!-- PAGE 1 -->
+  <div class="card" id="screen1">
+    <h1>Hi❤️, Hope you are in a good mood🥲</h1>
+    <p style="margin-bottom:10px;">(Hopefully I am not irritating you too much😅).</p>
+    <p style="margin-bottom:10px;">I have some questions for you if its okay with you.</p>
+    <p>Are you ready?</p>
+
+    <div class="arena" id="arena1">
+      <div class="row" id="row1">
+        <button class="yesBtn" id="yes1">Yes 💖</button>
+        <button class="noBtn" id="no1">No 😔</button>
       </div>
     </div>
 
-    <div class="msg" id="msg">Wrong answer 😅 Try again</div>
-
-    <!-- NEW: Message box that sends to you -->
-    <form class="note" id="messageForm" action="PASTE_FORM_ENDPOINT_HERE" method="POST">
-      <div style="font-weight:800; margin-bottom:6px;">Leave me a message 💌</div>
-
-      <div class="metaRow">
-        <div>
-          <label for="name">Name (optional)</label>
-          <input id="name" name="name" maxlength="40" placeholder="Your name" />
-        </div>
-        <div>
-          <label for="email">Email (optional)</label>
-          <input id="email" name="email" type="email" maxlength="120" placeholder="you@example.com" />
-        </div>
-      </div>
-
-      <label for="message">Message</label>
-      <textarea id="message" name="message" rows="4" placeholder="Type something sweet…" required></textarea>
-
-      <div class="counterRow">
-        <div id="wordCount">0/50 words</div>
-        <button class="smallBtn" type="submit">Send 💌</button>
-      </div>
-
-      <div class="status" id="status"></div>
-    </form>
+    <div class="msg" id="msg1">Okayyy 😅 I’ll wait…</div>
   </div>
 
-  <!-- YES SCREEN -->
+  <!-- PAGE 2 (your current page, but sentences swapped) -->
   <div class="card hidden" id="screen2">
-    <div class="yay">YAY!! 💞</div>
-    <p style="margin-top:10px;">You just made my day 😭💖</p>
-    <p>Text me: “YES, Valentine!” 😉</p>
+    <!-- swapped text but same format -->
+    <h1>I’ve been wanting to ask you this…</h1>
+    <p>Will you be my Valentine? 💘</p>
+
+    <div class="arena" id="arena2">
+      <div class="row" id="row2">
+        <button class="yesBtn" id="yes2">Yes 💖</button>
+        <button class="noBtn" id="no2">No 😔</button>
+      </div>
+    </div>
+
+    <div class="msg" id="msg2">Wrong answer 😅 Try again</div>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="card hidden" id="screen3">
+    <div class="yay">Now that we have gotten the right choice (of course without any use of force😎)</div>
+    <p style="margin-top:10px;">Lets move ahead.</p>
+
+    <div class="arena" style="height:auto;">
+      <div class="row" style="position:static; inset:auto;">
+        <button class="yesBtn" id="sure">Sure! ✅</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4 (placeholder for now) -->
+  <div class="card hidden" id="screen4">
+    <div class="yay">Okayyy 👀 Next page coming soon…</div>
+    <p style="margin-top:10px;">Tell me what you want on the next pages.</p>
   </div>
 
 <script>
-  const yes = document.getElementById('yes');
-  const no = document.getElementById('no');
-  const arena = document.getElementById('arena');
-  const row = document.getElementById('row');
-  const msg = document.getElementById('msg');
-  const s1 = document.getElementById('screen1');
-  const s2 = document.getElementById('screen2');
+  // Helpers
+  const screens = ["screen1","screen2","screen3","screen4"];
+  function showScreen(id){
+    screens.forEach(s => document.getElementById(s).classList.add("hidden"));
+    document.getElementById(id).classList.remove("hidden");
+  }
+
+  function flashMsg(el, ms=900){
+    el.classList.add("show");
+    clearTimeout(el.__t);
+    el.__t = setTimeout(() => el.classList.remove("show"), ms);
+  }
+
+  // -------- PAGE 1 logic ----------
+  const yes1 = document.getElementById("yes1");
+  const no1  = document.getElementById("no1");
+  const msg1 = document.getElementById("msg1");
+
+  yes1.addEventListener("click", () => showScreen("screen2"));
+  no1.addEventListener("click", () => flashMsg(msg1, 1100));
+
+  // -------- PAGE 2 logic (moving NO) ----------
+  const yes2 = document.getElementById('yes2');
+  const no2 = document.getElementById('no2');
+  const arena2 = document.getElementById('arena2');
+  const row2 = document.getElementById('row2');
+  const msg2 = document.getElementById('msg2');
 
   let noIsFree = false;
-
-  function showWrongAnswer(){
-    msg.classList.add('show');
-    clearTimeout(window.__msgTimer);
-    window.__msgTimer = setTimeout(() => msg.classList.remove('show'), 900);
-  }
 
   function detachNo(){
     if (noIsFree) return;
     noIsFree = true;
-    row.removeChild(no);
-    arena.appendChild(no);
-    no.style.position = 'absolute';
+
+    // Remove No from the flex row and add it directly to arena
+    row2.removeChild(no2);
+    arena2.appendChild(no2);
+
+    // Now allow it to move freely inside arena
+    no2.style.position = 'absolute';
   }
 
   function moveNoButton(){
-    const a = arena.getBoundingClientRect();
-    const n = no.getBoundingClientRect();
-    const y = yes.getBoundingClientRect();
+    const a = arena2.getBoundingClientRect();
+    const n = no2.getBoundingClientRect();
+    const y = yes2.getBoundingClientRect();
 
+    // Yes position relative to arena
     const yesTop = y.top - a.top;
     const yesBottom = yesTop + y.height;
 
@@ -238,76 +203,49 @@
     const maxX = Math.max(padding, a.width - n.width - padding);
     const maxY = Math.max(padding, a.height - n.height - padding);
 
+    // Forbidden vertical zone = Yes zone + buffer
     const buffer = 24;
     const forbiddenTop = yesTop - buffer;
     const forbiddenBottom = yesBottom + buffer;
 
-    let x, yPos, tries = 0;
+    let x, yPos;
+    let tries = 0;
 
     do {
       x = padding + Math.random() * (maxX - padding);
       yPos = padding + Math.random() * (maxY - padding);
       tries++;
+
       if (yPos + n.height < forbiddenTop || yPos > forbiddenBottom) break;
     } while (tries < 120);
 
-    no.style.left = `${x}px`;
-    no.style.top = `${yPos}px`;
+    no2.style.left = `${x}px`;
+    no2.style.top = `${yPos}px`;
   }
 
-  no.addEventListener('click', () => {
-    showWrongAnswer();
+  no2.addEventListener('click', () => {
+    flashMsg(msg2, 900);
     detachNo();
     moveNoButton();
   });
 
-  yes.addEventListener('click', () => {
-    s1.classList.add('hidden');
-    s2.classList.remove('hidden');
+  // YES on page 2 -> page 3
+  yes2.addEventListener('click', () => {
+    // reset No button if user comes back later (optional)
+    noIsFree = false;
+    if (no2.parentElement !== row2) {
+      no2.style.position = "";
+      no2.style.left = "";
+      no2.style.top = "";
+      row2.appendChild(no2);
+    }
+    showScreen("screen3");
   });
 
-  // NEW: word limit + sending status
-  const maxWords = 50;
-  const message = document.getElementById("message");
-  const wordCount = document.getElementById("wordCount");
-  const form = document.getElementById("messageForm");
-  const status = document.getElementById("status");
-
-  function updateCount(){
-    const words = message.value.trim().split(/\s+/).filter(Boolean);
-    if (words.length > maxWords) {
-      message.value = words.slice(0, maxWords).join(" ");
-    }
-    const wordsNow = message.value.trim().split(/\s+/).filter(Boolean).length;
-    wordCount.textContent = `${wordsNow}/${maxWords} words`;
-  }
-
-  message.addEventListener("input", updateCount);
-  updateCount();
-
-  // Optional: submit without leaving the page (AJAX)
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    status.textContent = "Sending…";
-
-    try {
-      const res = await fetch(form.action, {
-        method: "POST",
-        body: new FormData(form),
-        headers: { "Accept": "application/json" }
-      });
-
-      if (res.ok) {
-        status.textContent = "Sent! 💖";
-        form.reset();
-        updateCount();
-      } else {
-        status.textContent = "Oops—couldn’t send. Try again.";
-      }
-    } catch (err) {
-      status.textContent = "Network error. Please try again.";
-    }
-  });
+  // -------- PAGE 3 logic ----------
+  const sure = document.getElementById("sure");
+  sure.addEventListener("click", () => showScreen("screen4"));
 </script>
+
 </body>
 </html>
