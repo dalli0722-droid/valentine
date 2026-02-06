@@ -9,7 +9,11 @@
   body{
     margin:0; height:100vh; display:flex; align-items:center; justify-content:center;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    background: radial-gradient(circle at top, #ffe3ee, #fff);
+    /* FLOWERY/ROSE BACKGROUND (no external files needed) */
+    background:
+      radial-gradient(circle at top, rgba(255,227,238,.92), rgba(255,255,255,.92)),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Crect width='260' height='260' fill='%23fff3f8'/%3E%3Cg opacity='0.85'%3E%3Cg transform='translate(30 35)'%3E%3Ccircle cx='18' cy='18' r='8' fill='%23ff4b7d'/%3E%3Ccircle cx='18' cy='8' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='8' cy='18' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='28' cy='18' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='18' cy='28' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='18' cy='18' r='5' fill='%23ffd1de'/%3E%3Cpath d='M18 34 C16 42,10 48,2 50' stroke='%238fd19e' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M18 34 C20 42,26 48,34 50' stroke='%238fd19e' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(160 60) rotate(10)'%3E%3Ccircle cx='18' cy='18' r='8' fill='%23ff4b7d'/%3E%3Ccircle cx='18' cy='8' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='8' cy='18' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='28' cy='18' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='18' cy='28' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='18' cy='18' r='5' fill='%23ffd1de'/%3E%3Cpath d='M18 34 C16 42,10 48,2 50' stroke='%238fd19e' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M18 34 C20 42,26 48,34 50' stroke='%238fd19e' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(60 165) rotate(-8)'%3E%3Ccircle cx='18' cy='18' r='8' fill='%23ff4b7d'/%3E%3Ccircle cx='18' cy='8' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='8' cy='18' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='28' cy='18' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='18' cy='28' r='10' fill='%23ff7aa0'/%3E%3Ccircle cx='18' cy='18' r='5' fill='%23ffd1de'/%3E%3Cpath d='M18 34 C16 42,10 48,2 50' stroke='%238fd19e' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M18 34 C20 42,26 48,34 50' stroke='%238fd19e' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-size: auto, 260px 260px;
   }
 
   .card{
@@ -35,15 +39,25 @@
     font-size: 24px;
   }
 
+  /* Page 2: make "I’ve been wanting..." smaller and Valentine line bigger */
+  .page2-title{
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 12px;
+  }
+  .page2-sub{
+    font-size: 30px;
+    margin-bottom: 22px;
+  }
+
   /* Button area */
   .arena{
     position: relative;
     width: min(520px, 92vw);
-    height: 170px;          /* space for No to jump */
+    height: 170px;
     margin: 0 auto;
   }
 
-  /* initial side-by-side row */
   .row{
     position: absolute;
     inset: 0;
@@ -71,14 +85,12 @@
     min-width: 150px;
     z-index: 2;
   }
-
   .noBtn{
     background: #cfd6e6;
     color: #1f2a44;
     min-width: 150px;
   }
 
-  /* wrong answer message */
   .msg{
     height: 22px;
     font-size: 16px;
@@ -113,11 +125,10 @@
     <div class="msg" id="msg1">Okayyy 😅 I’ll wait…</div>
   </div>
 
-  <!-- PAGE 2 (your current page, but sentences swapped) -->
+  <!-- PAGE 2 -->
   <div class="card hidden" id="screen2">
-    <!-- swapped text but same format -->
-    <h1>I’ve been wanting to ask you this…</h1>
-    <p>Will you be my Valentine? 💘</p>
+    <h1 class="page2-title">I’ve been wanting to ask you this…</h1>
+    <p class="page2-sub">Will you be my Valentine? 💘</p>
 
     <div class="arena" id="arena2">
       <div class="row" id="row2">
@@ -169,7 +180,7 @@
   yes1.addEventListener("click", () => showScreen("screen2"));
   no1.addEventListener("click", () => flashMsg(msg1, 1100));
 
-  // -------- PAGE 2 logic (moving NO) ----------
+  // -------- PAGE 2 logic (moving NO + rotating messages) ----------
   const yes2 = document.getElementById('yes2');
   const no2 = document.getElementById('no2');
   const arena2 = document.getElementById('arena2');
@@ -177,6 +188,22 @@
   const msg2 = document.getElementById('msg2');
 
   let noIsFree = false;
+
+  // 6 messages total; after 3rd time it becomes "Please select yes😭😭"
+  const noMessages = [
+    "Wrong answer 😅 Try again",
+    "Nopeee 😭 Try again",
+    "Are you sure? 🥲 Just click Yes",
+    "Please select yes😭😭",
+    "I’m running out of patience 😤 (jk) — Yes please!",
+    "Okay last time… YES 😭💖"
+  ];
+  let noClickCount = 0;
+
+  function setNoMessage(){
+    const idx = Math.min(noClickCount, noMessages.length - 1);
+    msg2.textContent = noMessages[idx];
+  }
 
   function detachNo(){
     if (noIsFree) return;
@@ -224,15 +251,23 @@
   }
 
   no2.addEventListener('click', () => {
-    flashMsg(msg2, 900);
+    // increment, update message, show it
+    noClickCount++;
+    setNoMessage();
+    flashMsg(msg2, 950);
+
+    // move the NO button
     detachNo();
     moveNoButton();
   });
 
   // YES on page 2 -> page 3
   yes2.addEventListener('click', () => {
-    // reset No button if user comes back later (optional)
+    // reset NO behavior if needed later
     noIsFree = false;
+    noClickCount = 0;
+    msg2.textContent = noMessages[0];
+
     if (no2.parentElement !== row2) {
       no2.style.position = "";
       no2.style.left = "";
