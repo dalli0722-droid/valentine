@@ -21,9 +21,13 @@
 
   .card{
     position: relative;
-    background: rgba(255, 255, 255, 0.78); /* semi-transparent */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background:
+    linear-gradient(rgba(255,255,255,.75), rgba(255,255,255,.75)),
+    url("https://raw.githubusercontent.com/dalli0722-droid/valentine/main/background.jpg");
+    
+    background-size: cover;
+    background-position: center;
+    
     padding: 28px 22px;
     width: min(860px, 92vw);
     border-radius: 22px;
