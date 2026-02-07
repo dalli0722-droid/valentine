@@ -34,7 +34,7 @@
     background-position: center;
 
     padding: 22px 18px;
-    width: min(900px, 94vw);
+    width: min(980px, 96vw);
     border-radius: 22px;
     box-shadow: 0 10px 35px rgba(0,0,0,.15);
     text-align:center;
@@ -61,17 +61,12 @@
     user-select:none;
     box-shadow: 0 10px 22px rgba(0,0,0,.10);
     border-radius: 14px;
+    transition: transform .08s ease;
   }
+  button:active{ transform: scale(.98); }
 
-  .yesBtn{
-    background:#ff3b7a;
-    color:white;
-  }
-
-  .noBtn{
-    background:#cfd6e6;
-    color:#1f2a44;
-  }
+  .yesBtn{ background:#ff3b7a; color:white; }
+  .noBtn{ background:#cfd6e6; color:#1f2a44; }
 
   .bigBtn{
     padding: 14px 22px;
@@ -102,19 +97,20 @@
     margin: 4px 0 14px;
   }
 
+  /* Bigger image area */
   .dayGrid{
     display:grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.25fr 0.75fr;
     gap: 14px;
     align-items: stretch;
     margin: 0 auto;
-    max-width: 880px;
+    max-width: 920px;
   }
 
   .imgBox{
     background: rgba(255,255,255,0.60);
     border-radius: 18px;
-    padding: 8px;                 /* ⬅ reduced padding */
+    padding: 6px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -122,9 +118,8 @@
 
   .dayImg{
     width: 100%;
-    max-width: 480px;             /* ⬅ bigger width */
-    height: 280px;                /* ⬅ bigger height */
-    object-fit: contain;          /* ✅ no crop */
+    height: 360px;                 /* bigger */
+    object-fit: contain;           /* NO crop */
     background: rgba(255,255,255,.35);
     border-radius: 16px;
     box-shadow: 0 10px 22px rgba(0,0,0,.14);
@@ -158,11 +153,12 @@
     justify-content:center;
   }
 
+  /* Valentine arena (Yes/No) */
   .arena{
     position: relative;
     width: min(520px, 92vw);
-    height: 160px;
-    margin: 0 auto;
+    height: 170px;
+    margin: 10px auto 0;
   }
 
   .row{
@@ -177,15 +173,13 @@
   @media (max-width: 760px){
     .dayGrid{ grid-template-columns: 1fr; }
     .textBox{ text-align:center; }
-    .dayImg{
-      height: 260px;              /* ⬅ bigger on mobile */
-      max-width: 100%;
-    }
+    .dayImg{ height: 320px; }
   }
 
   @media (max-width: 480px){
     h1{ font-size: 40px; }
     .dayTitle{ font-size: 32px; }
+    .dayImg{ height: 300px; }
   }
 </style>
 </head>
@@ -202,7 +196,7 @@
   <div class="arena">
     <div class="row">
       <button class="yesBtn bigBtn" onclick="show('screen2')">Yes 💖</button>
-      <button class="noBtn bigBtn" onclick="flash(msg1)">No 😔</button>
+      <button class="noBtn bigBtn" id="noIntro">No 😔</button>
     </div>
   </div>
 
@@ -214,7 +208,7 @@
   <div class="dayTitle">Rose Day 🌹</div>
   <div class="dayGrid">
     <div class="imgBox">
-      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/rose.jpg">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/rose.jpg" alt="Rose Day">
     </div>
     <div class="textBox">
       <p class="dayText">
@@ -233,7 +227,7 @@
   <div class="dayTitle">Propose Day 💍</div>
   <div class="dayGrid">
     <div class="imgBox">
-      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/purpose.jpg">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/purpose.jpg" alt="Propose Day">
     </div>
     <div class="textBox">
       <p class="dayText"><strong>I choose you for all my tomorrows…</strong></p>
@@ -249,7 +243,7 @@
   <div class="dayTitle">Chocolate Day 🍫</div>
   <div class="dayGrid">
     <div class="imgBox">
-      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/chocolate.jpg">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/chocolate.jpg" alt="Chocolate Day">
     </div>
     <div class="textBox">
       <p class="dayText"><strong>You make even the ordinary feel sweet.</strong></p>
@@ -265,10 +259,13 @@
   <div class="dayTitle">Teddy Day 🧸</div>
   <div class="dayGrid">
     <div class="imgBox">
-      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/teddy.jpg">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/teddy.jpg" alt="Teddy Day">
     </div>
     <div class="textBox">
-      <p class="dayText"><strong>Until then… consider this a warm squeeze.</strong></p>
+      <p class="dayText">
+        If I could, I’d send you a teddy that hugs like me 🧸<br><br>
+        <strong>Until then… consider this a warm squeeze.</strong>
+      </p>
     </div>
   </div>
   <div class="bottomBar">
@@ -281,7 +278,7 @@
   <div class="dayTitle">Promise Day 🤞</div>
   <div class="dayGrid">
     <div class="imgBox">
-      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/promise.jpg">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/promise.jpg" alt="Promise Day">
     </div>
     <div class="textBox">
       <p class="dayText"><strong>Stay with me a bit longer ❤️…</strong></p>
@@ -297,7 +294,7 @@
   <div class="dayTitle">Hug Day 🤍</div>
   <div class="dayGrid">
     <div class="imgBox">
-      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/hug.jpg">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/hug.jpg" alt="Hug Day">
     </div>
     <div class="textBox">
       <p class="dayText"><strong>Peace feels like you ❤️…</strong></p>
@@ -313,7 +310,7 @@
   <div class="dayTitle">Kiss Day 😘</div>
   <div class="dayGrid">
     <div class="imgBox">
-      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/kiss.jpg">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/kiss.jpg" alt="Kiss Day">
     </div>
     <div class="textBox">
       <p class="dayText"><strong>Still falling for you.</strong></p>
@@ -324,12 +321,30 @@
   </div>
 </div>
 
-<!-- VALENTINE -->
+<!-- VALENTINE (YES/NO + moving NO + messages) -->
 <div class="card hidden" id="screen9">
   <div class="dayTitle">Valentine’s Day 💘</div>
   <p class="dayText" style="text-align:center;">
     3 years with you and I still choose you—every single day.<br><br>
     <strong>Will you be my Valentine?</strong>
+  </p>
+
+  <div class="arena" id="arenaV">
+    <div class="row" id="rowV">
+      <button class="yesBtn bigBtn" id="yesV">Yes 💖</button>
+      <button class="noBtn bigBtn" id="noV">No 😔</button>
+    </div>
+  </div>
+
+  <div class="msg" id="msgV">Wrong answer 😅 Try again</div>
+</div>
+
+<!-- FINAL PAGE -->
+<div class="card hidden" id="screen10">
+  <div class="dayTitle">Happy Valentine’s Day 💘</div>
+  <p class="dayText" style="text-align:center;">
+    <strong>Three years, and I’d still choose you first.</strong><br><br>
+    Thank you for being my best day… every day ❤️
   </p>
 </div>
 
@@ -340,10 +355,92 @@
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
-  function flash(el){
+  function flash(el, ms=1000){
     el.classList.add('show');
-    setTimeout(()=>el.classList.remove('show'),1000);
+    clearTimeout(el.__t);
+    el.__t = setTimeout(()=>el.classList.remove('show'), ms);
   }
+
+  // Intro NO -> message
+  const noIntro = document.getElementById("noIntro");
+  const msg1 = document.getElementById("msg1");
+  noIntro.addEventListener("click", () => flash(msg1, 1100));
+
+  // Valentine moving NO + messages
+  const yesV = document.getElementById('yesV');
+  const noV  = document.getElementById('noV');
+  const arenaV = document.getElementById('arenaV');
+  const rowV = document.getElementById('rowV');
+  const msgV = document.getElementById('msgV');
+
+  const noMessages = [
+    "Wrong answer 😅 Try again",
+    "Nopeee 😭 Try again",
+    "Are you sure? 🥲 Just click Yes",
+    "Please select yes😭😭",
+    "I’m running out of patience 😤 (jk) — Yes please!",
+    "Okay last time… YES 😭💖"
+  ];
+
+  let noIsFree = false;
+  let noClickCount = 0;
+
+  function setNoMessage(){
+    msgV.textContent = noMessages[Math.min(noClickCount, noMessages.length - 1)];
+  }
+
+  function detachNo(){
+    if (noIsFree) return;
+    noIsFree = true;
+
+    rowV.removeChild(noV);
+    arenaV.appendChild(noV);
+    noV.style.position = 'absolute';
+  }
+
+  function moveNoButton(){
+    const a = arenaV.getBoundingClientRect();
+    const n = noV.getBoundingClientRect();
+    const y = yesV.getBoundingClientRect();
+
+    // Yes position relative to arena
+    const yesTop = y.top - a.top;
+    const yesBottom = yesTop + y.height;
+
+    const padding = 10;
+    const maxX = Math.max(padding, a.width - n.width - padding);
+    const maxY = Math.max(padding, a.height - n.height - padding);
+
+    // Forbidden vertical zone around Yes (avoid overlapping)
+    const buffer = 26;
+    const forbiddenTop = yesTop - buffer;
+    const forbiddenBottom = yesBottom + buffer;
+
+    let x, yPos, tries = 0;
+    do {
+      x = padding + Math.random() * (maxX - padding);
+      yPos = padding + Math.random() * (maxY - padding);
+      tries++;
+
+      // If the No button is NOT in the forbidden band, accept.
+      if (yPos + n.height < forbiddenTop || yPos > forbiddenBottom) break;
+    } while (tries < 150);
+
+    noV.style.left = `${x}px`;
+    noV.style.top  = `${yPos}px`;
+  }
+
+  noV.addEventListener('click', () => {
+    noClickCount++;
+    setNoMessage();
+    flash(msgV, 950);
+    detachNo();
+    moveNoButton();
+  });
+
+  yesV.addEventListener('click', () => {
+    show('screen10');
+  });
 </script>
 
 </body>
