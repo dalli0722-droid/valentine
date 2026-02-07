@@ -7,8 +7,15 @@
 
 <style>
   body{
-    margin:0; height:100vh; display:flex; align-items:center; justify-content:center;
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;       /* FIX: start from top */
+    padding: 18px 12px;           /* FIX: spacing on mobile */
+    overflow-y:auto;              /* FIX: allow scrolling */
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
     background:
       linear-gradient(rgba(255, 245, 250, 0.5), rgba(255, 245, 250, 0.5)),
       url("https://raw.githubusercontent.com/dalli0722-droid/valentine/main/background.jpg");
@@ -49,7 +56,28 @@
   .hidden{ display:none; }
   .yay{ font-size: 28px; font-weight: 900; }
 
-  /* Button area */
+  /* Buttons */
+  button{
+    border:0;
+    padding: 16px 26px;
+    border-radius: 16px;
+    font-size: 20px;
+    cursor:pointer;
+    box-shadow: 0 10px 22px rgba(0,0,0,.10);
+  }
+
+  .yesBtn{
+    background:#ff3b7a;
+    color:white;
+    min-width:150px;
+  }
+
+  .noBtn{
+    background:#cfd6e6;
+    color:#1f2a44;
+    min-width:150px;
+  }
+
   .arena{
     position: relative;
     width: min(520px, 92vw);
@@ -66,30 +94,6 @@
     gap: 18px;
   }
 
-  button{
-    border:0;
-    padding: 16px 26px;
-    border-radius: 16px;
-    font-size: 20px;
-    cursor:pointer;
-    transition: transform .08s ease;
-    user-select: none;
-    box-shadow: 0 10px 22px rgba(0,0,0,.10);
-  }
-  button:active{ transform: scale(.98); }
-
-  .yesBtn{
-    background:#ff3b7a;
-    color:white;
-    min-width: 150px;
-    z-index: 2;
-  }
-  .noBtn{
-    background: #cfd6e6;
-    color: #1f2a44;
-    min-width: 150px;
-  }
-
   .msg{
     height: 22px;
     font-size: 16px;
@@ -100,324 +104,205 @@
   }
   .msg.show{ opacity: 1; }
 
-  /* Day page layout */
+  /* Day pages */
   .dayTitle{
     font-size: 44px;
     font-weight: 900;
-    margin: 0 0 10px;
+    margin-bottom: 10px;
   }
+
   .dayWrap{
     display:flex;
     flex-direction: column;
     align-items:center;
     gap: 16px;
-    margin-top: 6px;
   }
+
   .dayImg{
-    width: min(320px, 78vw);
-    height: auto;
+    width: min(320px, 80vw);
     border-radius: 18px;
     box-shadow: 0 10px 25px rgba(0,0,0,.15);
   }
+
   .dayText{
     font-size: 22px;
     max-width: 650px;
     line-height: 1.4;
-    margin: 0;
-  }
-  .dayText strong{
-    font-size: 24px;
-    color: #d6336c;
   }
 
-  /* Valentine page sizing */
+  .dayText strong{
+    font-size: 24px;
+    color:#d6336c;
+  }
+
+  /* Valentine page */
   .v-sub{
     font-size: 30px;
-    margin-bottom: 12px;
     font-weight: 900;
   }
+
   .v-title{
     font-size: 44px;
     font-weight: 900;
     margin-bottom: 18px;
+  }
+
+  /* Mobile tweaks */
+  @media (max-width: 480px){
+    h1{ font-size: 40px; }
+    .dayTitle{ font-size: 34px; }
+    .v-title{ font-size: 36px; }
   }
 </style>
 </head>
 
 <body>
 
-  <!-- SCREEN 1: Intro -->
-  <div class="card" id="screen1">
-    <h1>Hi❤️, Hope you are in a good mood🥲</h1>
-    <p style="margin-bottom:10px;">(Hopefully I am not irritating you too much😅).</p>
-    <p style="margin-bottom:10px;">I made something for you… if its okay with you.</p>
-    <p>Are you ready?</p>
+<!-- INTRO -->
+<div class="card" id="screen1">
+  <h1>Hi❤️, Hope you are in a good mood🥲</h1>
+  <p>(Hopefully I am not irritating you too much😅).</p>
+  <p>I made something for you…</p>
+  <p>Are you ready?</p>
 
-    <div class="arena" id="arena1">
-      <div class="row" id="row1">
-        <button class="yesBtn" id="startBtn">Yes 💖</button>
-        <button class="noBtn" id="no1">No 😔</button>
-      </div>
-    </div>
-
-    <div class="msg" id="msg1">Okayyy 😅 I’ll wait…</div>
-  </div>
-
-  <!-- SCREEN 2: Rose Day -->
-  <div class="card hidden" id="screen2">
-    <div class="dayTitle">Rose Day 🌹</div>
-    <div class="dayWrap">
-      <img class="dayImg"
-        src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/rose.jpg"
-        alt="Rose Day">
-      <p class="dayText">
-        A rose for my favorite person ❤️<br/>
-        <strong>“I’d still choose you first every day.”</strong>
-      </p>
-      <button class="yesBtn nextBtn" data-next="screen3">Next ➜</button>
+  <div class="arena">
+    <div class="row">
+      <button class="yesBtn" onclick="show('screen2')">Yes 💖</button>
+      <button class="noBtn" onclick="flash(msg1)">No 😔</button>
     </div>
   </div>
 
-  <!-- SCREEN 3: Propose Day -->
-  <div class="card hidden" id="screen3">
-    <div class="dayTitle">Propose Day 💍</div>
-    <div class="dayWrap">
-      <img class="dayImg"
-        src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/purpose.jpg"
-        alt="Propose Day">
-      <p class="dayText">
-        I propose something simple…<br/>
-        <strong>More “us”, more laughs, more forever-kind of love.</strong>
-      </p>
-      <button class="yesBtn nextBtn" data-next="screen4">Next ➜</button>
-    </div>
-  </div>
+  <div class="msg" id="msg1">Okayyy 😅 I’ll wait…</div>
+</div>
 
-  <!-- SCREEN 4: Chocolate Day -->
-  <div class="card hidden" id="screen4">
-    <div class="dayTitle">Chocolate Day 🍫</div>
-    <div class="dayWrap">
-      <img class="dayImg"
-        src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/chocolate.jpg"
-        alt="Chocolate Day">
-      <p class="dayText">
-        Sweet day reminder 🍫<br/>
-        <strong>I owe you real chocolate. And a real date.</strong>
-      </p>
-      <button class="yesBtn nextBtn" data-next="screen5">Next ➜</button>
-    </div>
-  </div>
-
-  <!-- SCREEN 5: Teddy Day -->
-  <div class="card hidden" id="screen5">
-    <div class="dayTitle">Teddy Day 🧸</div>
-    <div class="dayWrap">
-      <img class="dayImg"
-        src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/teddy.jpg"
-        alt="Teddy Day">
-      <p class="dayText">
-        If I could, I’d send you a teddy that hugs like me 🧸<br/>
-        <strong>Until then… consider this a warm squeeze.</strong>
-      </p>
-      <button class="yesBtn nextBtn" data-next="screen6">Next ➜</button>
-    </div>
-  </div>
-
-  <!-- SCREEN 6: Promise Day -->
-  <div class="card hidden" id="screen6">
-    <div class="dayTitle">Promise Day 🤞</div>
-    <div class="dayWrap">
-      <img class="dayImg"
-        src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/promise.jpg"
-        alt="Promise Day">
-      <p class="dayText">
-        Today’s promises (from me to you):<br/>
-        <strong>
-          • I’ll keep choosing you.<br/>
-          • I’ll listen more, love louder.<br/>
-          • I’ll protect our peace.<br/>
-          • I’ll never stop being silly with you.
-        </strong>
-      </p>
-      <button class="yesBtn nextBtn" data-next="screen7">Next ➜</button>
-    </div>
-  </div>
-
-  <!-- SCREEN 7: Hug Day -->
-  <div class="card hidden" id="screen7">
-    <div class="dayTitle">Hug Day 🤍</div>
-    <div class="dayWrap">
-      <img class="dayImg"
-        src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/hug.jpg"
-        alt="Hug Day">
-      <p class="dayText">
-        This is your reminder 🤍<br/>
-        <strong>The next hug is pending… and non-negotiable.</strong>
-      </p>
-      <button class="yesBtn nextBtn" data-next="screen8">Next ➜</button>
-    </div>
-  </div>
-
-  <!-- SCREEN 8: Kiss Day -->
-  <div class="card hidden" id="screen8">
-    <div class="dayTitle">Kiss Day 😘</div>
-    <div class="dayWrap">
-      <img class="dayImg"
-        src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/kiss.jpg"
-        alt="Kiss Day">
-      <p class="dayText">
-        A small kiss day note 😘<br/>
-        <strong>I’m saving the best ones for you.</strong>
-      </p>
-      <button class="yesBtn nextBtn" data-next="screen9">Next ➜</button>
-    </div>
-  </div>
-
-  <!-- SCREEN 9: Valentine's Day -->
-  <div class="card hidden" id="screen9">
-    <div class="v-sub">Final question… 💘</div>
-    <div class="v-title">Will you be my Valentine? 💖</div>
-
-    <div class="arena" id="arenaV">
-      <div class="row" id="rowV">
-        <button class="yesBtn" id="yesV">Yes 💖</button>
-        <button class="noBtn" id="noV">No 😔</button>
-      </div>
-    </div>
-
-    <div class="msg" id="msgV">Wrong answer 😅 Try again</div>
-  </div>
-
-  <!-- SCREEN 10: End -->
-  <div class="card hidden" id="screen10">
-    <div class="yay">Happy Valentine’s Day, my love 💘</div>
-    <p style="margin-top:10px;">
-      3 years with you and I still get butterflies.<br/>
-      Thank you for being my best day—every day.
+<!-- ROSE DAY -->
+<div class="card hidden" id="screen2">
+  <div class="dayTitle">Rose Day 🌹</div>
+  <div class="dayWrap">
+    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/rose.jpg">
+    <p class="dayText">
+      A rose for my favorite person ❤️<br>
+      <strong>“I’d still choose you first every day.”</strong>
     </p>
-    <button class="yesBtn" id="restart">Replay 🔁</button>
+    <button class="yesBtn" onclick="show('screen3')">Next ➜</button>
   </div>
+</div>
+
+<!-- PROPOSE DAY -->
+<div class="card hidden" id="screen3">
+  <div class="dayTitle">Propose Day 💍</div>
+  <div class="dayWrap">
+    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/purpose.jpg">
+    <p class="dayText">
+      I propose something simple…<br>
+      <strong>More “us”, more laughs, more forever-kind of love.</strong>
+    </p>
+    <button class="yesBtn" onclick="show('screen4')">Next ➜</button>
+  </div>
+</div>
+
+<!-- CHOCOLATE DAY -->
+<div class="card hidden" id="screen4">
+  <div class="dayTitle">Chocolate Day 🍫</div>
+  <div class="dayWrap">
+    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/chocolate.jpg">
+    <p class="dayText">
+      Sweet reminder 🍫<br>
+      <strong>I owe you chocolate. And a real date.</strong>
+    </p>
+    <button class="yesBtn" onclick="show('screen5')">Next ➜</button>
+  </div>
+</div>
+
+<!-- TEDDY DAY -->
+<div class="card hidden" id="screen5">
+  <div class="dayTitle">Teddy Day 🧸</div>
+  <div class="dayWrap">
+    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/teddy.jpg">
+    <p class="dayText">
+      A teddy that hugs like me 🧸<br>
+      <strong>Until then… imagine this squeeze.</strong>
+    </p>
+    <button class="yesBtn" onclick="show('screen6')">Next ➜</button>
+  </div>
+</div>
+
+<!-- PROMISE DAY -->
+<div class="card hidden" id="screen6">
+  <div class="dayTitle">Promise Day 🤞</div>
+  <div class="dayWrap">
+    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/promise.jpg">
+    <p class="dayText">
+      My promises to you:<br>
+      <strong>
+        • I’ll keep choosing you<br>
+        • I’ll listen more<br>
+        • I’ll protect our peace<br>
+        • I’ll always be yours
+      </strong>
+    </p>
+    <button class="yesBtn" onclick="show('screen7')">Next ➜</button>
+  </div>
+</div>
+
+<!-- HUG DAY -->
+<div class="card hidden" id="screen7">
+  <div class="dayTitle">Hug Day 🤍</div>
+  <div class="dayWrap">
+    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/hug.jpg">
+    <p class="dayText">
+      Hug reminder 🤍<br>
+      <strong>The next one is non-negotiable.</strong>
+    </p>
+    <button class="yesBtn" onclick="show('screen8')">Next ➜</button>
+  </div>
+</div>
+
+<!-- KISS DAY -->
+<div class="card hidden" id="screen8">
+  <div class="dayTitle">Kiss Day 😘</div>
+  <div class="dayWrap">
+    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/kiss.jpg">
+    <p class="dayText">
+      Just a reminder 😘<br>
+      <strong>I’m saving the best ones for you.</strong>
+    </p>
+    <button class="yesBtn" onclick="show('screen9')">Next ➜</button>
+  </div>
+</div>
+
+<!-- VALENTINE -->
+<div class="card hidden" id="screen9">
+  <div class="v-sub">Final question 💘</div>
+  <div class="v-title">Will you be my Valentine?</div>
+
+  <div class="arena">
+    <div class="row">
+      <button class="yesBtn" onclick="show('screen10')">Yes 💖</button>
+      <button class="noBtn" onclick="flash(msgV)">No 😔</button>
+    </div>
+  </div>
+
+  <div class="msg" id="msgV">Wrong answer 😅 Try again</div>
+</div>
+
+<!-- END -->
+<div class="card hidden" id="screen10">
+  <div class="yay">Happy Valentine’s Day 💘</div>
+  <p>3 years with you and I still choose you—every single day.</p>
+</div>
 
 <script>
-  // Helpers
-  const screens = ["screen1","screen2","screen3","screen4","screen5","screen6","screen7","screen8","screen9","screen10"];
-  function showScreen(id){
-    screens.forEach(s => document.getElementById(s).classList.add("hidden"));
-    document.getElementById(id).classList.remove("hidden");
+  function show(id){
+    document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
   }
 
-  function flashMsg(el, ms=900){
-    el.classList.add("show");
-    clearTimeout(el.__t);
-    el.__t = setTimeout(() => el.classList.remove("show"), ms);
+  function flash(el){
+    el.classList.add('show');
+    setTimeout(()=>el.classList.remove('show'),1000);
   }
-
-  // Intro
-  const startBtn = document.getElementById("startBtn");
-  const no1 = document.getElementById("no1");
-  const msg1 = document.getElementById("msg1");
-
-  startBtn.addEventListener("click", () => showScreen("screen2"));
-  no1.addEventListener("click", () => flashMsg(msg1, 1100));
-
-  // Generic Next buttons
-  document.querySelectorAll(".nextBtn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const next = btn.getAttribute("data-next");
-      showScreen(next);
-    });
-  });
-
-  // Valentine page moving NO
-  const yesV = document.getElementById('yesV');
-  const noV = document.getElementById('noV');
-  const arenaV = document.getElementById('arenaV');
-  const rowV = document.getElementById('rowV');
-  const msgV = document.getElementById('msgV');
-
-  let noIsFree = false;
-
-  const noMessages = [
-    "Wrong answer 😅 Try again",
-    "Nopeee 😭 Try again",
-    "Are you sure? 🥲 Just click Yes",
-    "Please select yes😭😭",
-    "I’m running out of patience 😤 (jk) — Yes please!",
-    "Okay last time… YES 😭💖"
-  ];
-  let noClickCount = 0;
-
-  function setNoMessage(){
-    const idx = Math.min(noClickCount, noMessages.length - 1);
-    msgV.textContent = noMessages[idx];
-  }
-
-  function detachNo(){
-    if (noIsFree) return;
-    noIsFree = true;
-
-    rowV.removeChild(noV);
-    arenaV.appendChild(noV);
-    noV.style.position = 'absolute';
-  }
-
-  function moveNoButton(){
-    const a = arenaV.getBoundingClientRect();
-    const n = noV.getBoundingClientRect();
-    const y = yesV.getBoundingClientRect();
-
-    const yesTop = y.top - a.top;
-    const yesBottom = yesTop + y.height;
-
-    const padding = 10;
-    const maxX = Math.max(padding, a.width - n.width - padding);
-    const maxY = Math.max(padding, a.height - n.height - padding);
-
-    const buffer = 24;
-    const forbiddenTop = yesTop - buffer;
-    const forbiddenBottom = yesBottom + buffer;
-
-    let x, yPos;
-    let tries = 0;
-
-    do {
-      x = padding + Math.random() * (maxX - padding);
-      yPos = padding + Math.random() * (maxY - padding);
-      tries++;
-
-      if (yPos + n.height < forbiddenTop || yPos > forbiddenBottom) break;
-    } while (tries < 120);
-
-    noV.style.left = `${x}px`;
-    noV.style.top = `${yPos}px`;
-  }
-
-  noV.addEventListener('click', () => {
-    noClickCount++;
-    setNoMessage();
-    flashMsg(msgV, 950);
-
-    detachNo();
-    moveNoButton();
-  });
-
-  yesV.addEventListener('click', () => {
-    // reset NO behavior if replay happens
-    noIsFree = false;
-    noClickCount = 0;
-    msgV.textContent = noMessages[0];
-
-    if (noV.parentElement !== rowV) {
-      noV.style.position = "";
-      noV.style.left = "";
-      noV.style.top = "";
-      rowV.appendChild(noV);
-    }
-    showScreen("screen10");
-  });
-
-  // Replay
-  document.getElementById("restart").addEventListener("click", () => showScreen("screen1"));
 </script>
 
 </body>
