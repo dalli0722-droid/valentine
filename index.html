@@ -118,7 +118,7 @@
 
   .dayImg{
     width: 100%;
-    height: 360px;                 /* bigger */
+    height: 360px;                 /* big like before */
     object-fit: contain;           /* NO crop */
     background: rgba(255,255,255,.35);
     border-radius: 16px;
@@ -349,7 +349,7 @@
 </div>
 
 <script>
-  function show(id
+  function show(id){
     document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
     window.scrollTo({top:0, behavior:'smooth'});
@@ -439,6 +439,18 @@
   });
 
   yesV.addEventListener('click', () => {
+    // Reset NO button state (keeps things clean)
+    noIsFree = false;
+    noClickCount = 0;
+    msgV.textContent = noMessages[0];
+
+    if (noV.parentElement !== rowV) {
+      noV.style.position = "";
+      noV.style.left = "";
+      noV.style.top = "";
+      rowV.appendChild(noV);
+    }
+
     show('screen10');
   });
 </script>
