@@ -80,7 +80,7 @@
   }
 
   .nextSmall{
-    padding: 10px 16px;
+    padding: 10px 18px;
     font-size: 16px;
     border-radius: 12px;
   }
@@ -108,13 +108,13 @@
     gap: 14px;
     align-items: stretch;
     margin: 0 auto;
-    max-width: 860px;
+    max-width: 880px;
   }
 
   .imgBox{
     background: rgba(255,255,255,0.60);
     border-radius: 18px;
-    padding: 14px;
+    padding: 8px;                 /* ⬅ reduced padding */
     display:flex;
     align-items:center;
     justify-content:center;
@@ -122,9 +122,9 @@
 
   .dayImg{
     width: 100%;
-    max-width: 360px;
-    height: 220px;
-    object-fit: contain;                /* ✅ FULL IMAGE, NO CROP */
+    max-width: 480px;             /* ⬅ bigger width */
+    height: 280px;                /* ⬅ bigger height */
+    object-fit: contain;          /* ✅ no crop */
     background: rgba(255,255,255,.35);
     border-radius: 16px;
     box-shadow: 0 10px 22px rgba(0,0,0,.14);
@@ -133,7 +133,7 @@
   .textBox{
     background: rgba(255,255,255,0.78);
     border-radius: 18px;
-    padding: 16px;
+    padding: 18px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -177,7 +177,10 @@
   @media (max-width: 760px){
     .dayGrid{ grid-template-columns: 1fr; }
     .textBox{ text-align:center; }
-    .dayImg{ height: 200px; }
+    .dayImg{
+      height: 260px;              /* ⬅ bigger on mobile */
+      max-width: 100%;
+    }
   }
 
   @media (max-width: 480px){
@@ -233,9 +236,7 @@
       <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/purpose.jpg">
     </div>
     <div class="textBox">
-      <p class="dayText">
-        <strong>I choose you for all my tomorrows…</strong>
-      </p>
+      <p class="dayText"><strong>I choose you for all my tomorrows…</strong></p>
     </div>
   </div>
   <div class="bottomBar">
@@ -251,10 +252,7 @@
       <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/chocolate.jpg">
     </div>
     <div class="textBox">
-      <p class="dayText">
-        Sweet reminder 🍫<br><br>
-        <strong>You make even the ordinary feel sweet.</strong>
-      </p>
+      <p class="dayText"><strong>You make even the ordinary feel sweet.</strong></p>
     </div>
   </div>
   <div class="bottomBar">
@@ -270,10 +268,7 @@
       <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/teddy.jpg">
     </div>
     <div class="textBox">
-      <p class="dayText">
-        If I could, I’d send you a teddy that hugs like me 🧸<br><br>
-        <strong>Until then… consider this a warm squeeze.</strong>
-      </p>
+      <p class="dayText"><strong>Until then… consider this a warm squeeze.</strong></p>
     </div>
   </div>
   <div class="bottomBar">
@@ -289,9 +284,7 @@
       <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/promise.jpg">
     </div>
     <div class="textBox">
-      <p class="dayText">
-        <strong>Stay with me a bit longer ❤️…</strong>
-      </p>
+      <p class="dayText"><strong>Stay with me a bit longer ❤️…</strong></p>
     </div>
   </div>
   <div class="bottomBar">
@@ -307,9 +300,7 @@
       <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/hug.jpg">
     </div>
     <div class="textBox">
-      <p class="dayText">
-        <strong>Peace feels like you ❤️…</strong>
-      </p>
+      <p class="dayText"><strong>Peace feels like you ❤️…</strong></p>
     </div>
   </div>
   <div class="bottomBar">
@@ -325,9 +316,7 @@
       <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/kiss.jpg">
     </div>
     <div class="textBox">
-      <p class="dayText">
-        <strong>Still falling for you.</strong>
-      </p>
+      <p class="dayText"><strong>Still falling for you.</strong></p>
     </div>
   </div>
   <div class="bottomBar">
