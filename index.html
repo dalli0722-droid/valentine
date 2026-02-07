@@ -48,6 +48,7 @@
     font-size: 52px;
     font-weight: 900;
   }
+
   p{
     margin: 0 0 18px;
     color:#444;
@@ -61,10 +62,12 @@
     box-shadow: 0 10px 22px rgba(0,0,0,.10);
     border-radius: 14px;
   }
+
   .yesBtn{
     background:#ff3b7a;
     color:white;
   }
+
   .noBtn{
     background:#cfd6e6;
     color:#1f2a44;
@@ -111,7 +114,7 @@
   .imgBox{
     background: rgba(255,255,255,0.60);
     border-radius: 18px;
-    padding: 12px;
+    padding: 14px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -120,8 +123,9 @@
   .dayImg{
     width: 100%;
     max-width: 360px;
-    height: 220px;        /* ✅ REDUCED HEIGHT */
-    object-fit: cover;
+    height: 220px;
+    object-fit: contain;                /* ✅ FULL IMAGE, NO CROP */
+    background: rgba(255,255,255,.35);
     border-radius: 16px;
     box-shadow: 0 10px 22px rgba(0,0,0,.14);
   }
@@ -142,6 +146,7 @@
     line-height: 1.45;
     color:#333;
   }
+
   .dayText strong{
     color:#d6336c;
     font-size: 22px;
@@ -159,6 +164,7 @@
     height: 160px;
     margin: 0 auto;
   }
+
   .row{
     position:absolute;
     inset:0;
@@ -228,7 +234,7 @@
     </div>
     <div class="textBox">
       <p class="dayText">
-        <strong> I choose you for all my tomorrows...</strong>
+        <strong>I choose you for all my tomorrows…</strong>
       </p>
     </div>
   </div>
@@ -247,7 +253,6 @@
     <div class="textBox">
       <p class="dayText">
         Sweet reminder 🍫<br><br>
-        <strong>This is where you owe me a chocolate...</strong>
         <strong>You make even the ordinary feel sweet.</strong>
       </p>
     </div>
@@ -285,10 +290,7 @@
     </div>
     <div class="textBox">
       <p class="dayText">
-        Today’s promises (from me to you):<br><br>
-        <strong>
-          Stay with me a bit longer❤️...
-        </strong>
+        <strong>Stay with me a bit longer ❤️…</strong>
       </p>
     </div>
   </div>
@@ -306,7 +308,7 @@
     </div>
     <div class="textBox">
       <p class="dayText">
-        <strong>Peace feels like you❤️...</strong>
+        <strong>Peace feels like you ❤️…</strong>
       </p>
     </div>
   </div>
@@ -348,6 +350,7 @@
     document.getElementById(id).classList.remove('hidden');
     window.scrollTo({top:0, behavior:'smooth'});
   }
+
   function flash(el){
     el.classList.add('show');
     setTimeout(()=>el.classList.remove('show'),1000);
