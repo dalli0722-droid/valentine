@@ -11,9 +11,9 @@
     min-height:100vh;
     display:flex;
     justify-content:center;
-    align-items:flex-start;       /* FIX: start from top */
-    padding: 18px 12px;           /* FIX: spacing on mobile */
-    overflow-y:auto;              /* FIX: allow scrolling */
+    align-items:flex-start;
+    padding: 18px 12px;
+    overflow-y:auto;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
     background:
@@ -33,125 +33,150 @@
     background-size: cover;
     background-position: center;
 
-    padding: 28px 22px;
-    width: min(860px, 92vw);
+    padding: 22px 18px;
+    width: min(900px, 94vw);
     border-radius: 22px;
     box-shadow: 0 10px 35px rgba(0,0,0,.15);
     text-align:center;
     overflow: hidden;
   }
 
+  .hidden{ display:none; }
+
   h1{
     margin: 0 0 10px;
-    font-size: 54px;
+    font-size: 52px;
     font-weight: 900;
   }
-
   p{
-    margin: 0 0 22px;
+    margin: 0 0 18px;
     color:#444;
-    font-size: 24px;
+    font-size: 22px;
   }
 
-  .hidden{ display:none; }
-  .yay{ font-size: 28px; font-weight: 900; }
-
-  /* Buttons */
   button{
     border:0;
-    padding: 16px 26px;
-    border-radius: 16px;
-    font-size: 20px;
     cursor:pointer;
+    user-select:none;
     box-shadow: 0 10px 22px rgba(0,0,0,.10);
+    border-radius: 14px;
   }
-
   .yesBtn{
     background:#ff3b7a;
     color:white;
-    min-width:150px;
   }
-
   .noBtn{
     background:#cfd6e6;
     color:#1f2a44;
-    min-width:150px;
   }
 
-  .arena{
-    position: relative;
-    width: min(520px, 92vw);
-    height: 170px;
-    margin: 0 auto;
+  .bigBtn{
+    padding: 14px 22px;
+    font-size: 18px;
+    min-width: 140px;
   }
 
-  .row{
-    position: absolute;
-    inset: 0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap: 18px;
+  .nextSmall{
+    padding: 10px 16px;
+    font-size: 16px;
+    border-radius: 12px;
   }
 
   .msg{
     height: 22px;
-    font-size: 16px;
+    font-size: 15px;
     color: #2b3a67;
-    margin-top: 12px;
+    margin-top: 10px;
     opacity: 0;
     transition: opacity .15s ease;
   }
   .msg.show{ opacity: 1; }
 
-  /* Day pages */
+  /* ===== Day layout ===== */
   .dayTitle{
-    font-size: 44px;
+    font-size: 40px;
     font-weight: 900;
-    margin-bottom: 10px;
+    margin: 4px 0 14px;
   }
 
-  .dayWrap{
+  .dayGrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    align-items: stretch;
+    margin: 0 auto;
+    max-width: 860px;
+  }
+
+  .imgBox{
+    background: rgba(255,255,255,0.60);
+    border-radius: 18px;
+    padding: 12px;
     display:flex;
-    flex-direction: column;
     align-items:center;
-    gap: 16px;
+    justify-content:center;
   }
 
   .dayImg{
-    width: min(320px, 80vw);
+    width: 100%;
+    max-width: 360px;
+    height: 220px;        /* ✅ REDUCED HEIGHT */
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 10px 22px rgba(0,0,0,.14);
+  }
+
+  .textBox{
+    background: rgba(255,255,255,0.78);
     border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(0,0,0,.15);
+    padding: 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:left;
   }
 
   .dayText{
-    font-size: 22px;
-    max-width: 650px;
-    line-height: 1.4;
+    margin:0;
+    font-size: 20px;
+    line-height: 1.45;
+    color:#333;
   }
-
   .dayText strong{
-    font-size: 24px;
     color:#d6336c;
+    font-size: 22px;
   }
 
-  /* Valentine page */
-  .v-sub{
-    font-size: 30px;
-    font-weight: 900;
+  .bottomBar{
+    margin-top: 16px;
+    display:flex;
+    justify-content:center;
   }
 
-  .v-title{
-    font-size: 44px;
-    font-weight: 900;
-    margin-bottom: 18px;
+  .arena{
+    position: relative;
+    width: min(520px, 92vw);
+    height: 160px;
+    margin: 0 auto;
+  }
+  .row{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
   }
 
-  /* Mobile tweaks */
+  @media (max-width: 760px){
+    .dayGrid{ grid-template-columns: 1fr; }
+    .textBox{ text-align:center; }
+    .dayImg{ height: 200px; }
+  }
+
   @media (max-width: 480px){
     h1{ font-size: 40px; }
-    .dayTitle{ font-size: 34px; }
-    .v-title{ font-size: 36px; }
+    .dayTitle{ font-size: 32px; }
   }
 </style>
 </head>
@@ -167,8 +192,8 @@
 
   <div class="arena">
     <div class="row">
-      <button class="yesBtn" onclick="show('screen2')">Yes 💖</button>
-      <button class="noBtn" onclick="flash(msg1)">No 😔</button>
+      <button class="yesBtn bigBtn" onclick="show('screen2')">Yes 💖</button>
+      <button class="noBtn bigBtn" onclick="flash(msg1)">No 😔</button>
     </div>
   </div>
 
@@ -178,118 +203,148 @@
 <!-- ROSE DAY -->
 <div class="card hidden" id="screen2">
   <div class="dayTitle">Rose Day 🌹</div>
-  <div class="dayWrap">
-    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/rose.jpg">
-    <p class="dayText">
-      A rose for my favorite person ❤️<br>
-      <strong>“I’d still choose you first every day.”</strong>
-    </p>
-    <button class="yesBtn" onclick="show('screen3')">Next ➜</button>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/rose.jpg">
+    </div>
+    <div class="textBox">
+      <p class="dayText">
+        A rose for my favorite person ❤️<br><br>
+        <strong>“I’d still choose you first every day.”</strong>
+      </p>
+    </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen3')">Next ➜</button>
   </div>
 </div>
 
 <!-- PROPOSE DAY -->
 <div class="card hidden" id="screen3">
   <div class="dayTitle">Propose Day 💍</div>
-  <div class="dayWrap">
-    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/purpose.jpg">
-    <p class="dayText">
-      I propose something simple…<br>
-      <strong>More “us”, more laughs, more forever-kind of love.</strong>
-    </p>
-    <button class="yesBtn" onclick="show('screen4')">Next ➜</button>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/purpose.jpg">
+    </div>
+    <div class="textBox">
+      <p class="dayText">
+        I propose something simple…<br><br>
+        <strong>More “us”, more laughs, more forever-kind of love.</strong>
+      </p>
+    </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen4')">Next ➜</button>
   </div>
 </div>
 
 <!-- CHOCOLATE DAY -->
 <div class="card hidden" id="screen4">
   <div class="dayTitle">Chocolate Day 🍫</div>
-  <div class="dayWrap">
-    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/chocolate.jpg">
-    <p class="dayText">
-      Sweet reminder 🍫<br>
-      <strong>I owe you chocolate. And a real date.</strong>
-    </p>
-    <button class="yesBtn" onclick="show('screen5')">Next ➜</button>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/chocolate.jpg">
+    </div>
+    <div class="textBox">
+      <p class="dayText">
+        Sweet reminder 🍫<br><br>
+        <strong>I owe you chocolate… and a real date.</strong>
+      </p>
+    </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen5')">Next ➜</button>
   </div>
 </div>
 
 <!-- TEDDY DAY -->
 <div class="card hidden" id="screen5">
   <div class="dayTitle">Teddy Day 🧸</div>
-  <div class="dayWrap">
-    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/teddy.jpg">
-    <p class="dayText">
-      A teddy that hugs like me 🧸<br>
-      <strong>Until then… imagine this squeeze.</strong>
-    </p>
-    <button class="yesBtn" onclick="show('screen6')">Next ➜</button>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/teddy.jpg">
+    </div>
+    <div class="textBox">
+      <p class="dayText">
+        If I could, I’d send you a teddy that hugs like me 🧸<br><br>
+        <strong>Until then… consider this a warm squeeze.</strong>
+      </p>
+    </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen6')">Next ➜</button>
   </div>
 </div>
 
 <!-- PROMISE DAY -->
 <div class="card hidden" id="screen6">
   <div class="dayTitle">Promise Day 🤞</div>
-  <div class="dayWrap">
-    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/promise.jpg">
-    <p class="dayText">
-      My promises to you:<br>
-      <strong>
-        • I’ll keep choosing you<br>
-        • I’ll listen more<br>
-        • I’ll protect our peace<br>
-        • I’ll always be yours
-      </strong>
-    </p>
-    <button class="yesBtn" onclick="show('screen7')">Next ➜</button>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/promise.jpg">
+    </div>
+    <div class="textBox">
+      <p class="dayText">
+        Today’s promises (from me to you):<br><br>
+        <strong>
+          • I’ll keep choosing you.<br>
+          • I’ll listen more, love louder.<br>
+          • I’ll protect our peace.<br>
+          • I’ll never stop being silly with you.
+        </strong>
+      </p>
+    </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen7')">Next ➜</button>
   </div>
 </div>
 
 <!-- HUG DAY -->
 <div class="card hidden" id="screen7">
   <div class="dayTitle">Hug Day 🤍</div>
-  <div class="dayWrap">
-    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/hug.jpg">
-    <p class="dayText">
-      Hug reminder 🤍<br>
-      <strong>The next one is non-negotiable.</strong>
-    </p>
-    <button class="yesBtn" onclick="show('screen8')">Next ➜</button>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/hug.jpg">
+    </div>
+    <div class="textBox">
+      <p class="dayText">
+        Hug reminder 🤍<br><br>
+        <strong>The next one is pending… and non-negotiable.</strong>
+      </p>
+    </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen8')">Next ➜</button>
   </div>
 </div>
 
 <!-- KISS DAY -->
 <div class="card hidden" id="screen8">
   <div class="dayTitle">Kiss Day 😘</div>
-  <div class="dayWrap">
-    <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/kiss.jpg">
-    <p class="dayText">
-      Just a reminder 😘<br>
-      <strong>I’m saving the best ones for you.</strong>
-    </p>
-    <button class="yesBtn" onclick="show('screen9')">Next ➜</button>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/kiss.jpg">
+    </div>
+    <div class="textBox">
+      <p class="dayText">
+        Just a reminder 😘<br><br>
+        <strong>I’m saving the best ones for you.</strong>
+      </p>
+    </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen9')">Next ➜</button>
   </div>
 </div>
 
 <!-- VALENTINE -->
 <div class="card hidden" id="screen9">
-  <div class="v-sub">Final question 💘</div>
-  <div class="v-title">Will you be my Valentine?</div>
-
-  <div class="arena">
-    <div class="row">
-      <button class="yesBtn" onclick="show('screen10')">Yes 💖</button>
-      <button class="noBtn" onclick="flash(msgV)">No 😔</button>
-    </div>
-  </div>
-
-  <div class="msg" id="msgV">Wrong answer 😅 Try again</div>
-</div>
-
-<!-- END -->
-<div class="card hidden" id="screen10">
-  <div class="yay">Happy Valentine’s Day 💘</div>
-  <p>3 years with you and I still choose you—every single day.</p>
+  <div class="dayTitle">Valentine’s Day 💘</div>
+  <p class="dayText" style="text-align:center;">
+    3 years with you and I still choose you—every single day.<br><br>
+    <strong>Will you be my Valentine?</strong>
+  </p>
 </div>
 
 <script>
@@ -298,7 +353,6 @@
     document.getElementById(id).classList.remove('hidden');
     window.scrollTo({top:0, behavior:'smooth'});
   }
-
   function flash(el){
     el.classList.add('show');
     setTimeout(()=>el.classList.remove('show'),1000);
