@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,6 +98,7 @@
     margin: 4px 0 14px;
   }
 
+  /* Bigger image area */
   .dayGrid{
     display:grid;
     grid-template-columns: 1.25fr 0.75fr;
@@ -117,8 +119,8 @@
 
   .dayImg{
     width: 100%;
-    height: 360px;                 /* keep big */
-    object-fit: contain;           /* no crop */
+    height: 360px;                 /* big like before */
+    object-fit: contain;           /* NO crop */
     background: rgba(255,255,255,.35);
     border-radius: 16px;
     box-shadow: 0 10px 22px rgba(0,0,0,.14);
@@ -150,7 +152,6 @@
     margin-top: 16px;
     display:flex;
     justify-content:center;
-    gap: 10px;
   }
 
   /* Valentine arena (Yes/No) */
@@ -168,38 +169,6 @@
     align-items:center;
     justify-content:center;
     gap:16px;
-  }
-
-  /* ===== Lock overlay ===== */
-  .lockWrap{ position: relative; }
-  .lockOverlay{
-    position:absolute;
-    inset:0;
-    background: rgba(255,255,255,.82);
-    backdrop-filter: blur(3px);
-    border-radius: 18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding: 16px;
-    z-index: 50;
-  }
-  .lockBox{
-    background: rgba(255,255,255,.92);
-    border-radius: 16px;
-    padding: 14px 16px;
-    box-shadow: 0 10px 22px rgba(0,0,0,.10);
-    max-width: 520px;
-  }
-  .lockTitle{
-    font-weight: 900;
-    font-size: 20px;
-    margin: 0 0 6px;
-  }
-  .lockText{
-    margin: 0;
-    color:#444;
-    font-size: 16px;
   }
 
   @media (max-width: 760px){
@@ -237,154 +206,138 @@
 
 <!-- ROSE DAY -->
 <div class="card hidden" id="screen2">
-  <div class="lockWrap">
-    <div class="dayTitle">Rose Day 🌹</div>
-    <div class="dayGrid">
-      <div class="imgBox">
-        <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/rose.jpg" alt="Rose Day">
-      </div>
-      <div class="textBox">
-        <p class="dayText">
-          A rose for my favorite person ❤️<br><br>
-          <strong>“I’d still choose you first every single day.”</strong>
-        </p>
-      </div>
+  <div class="dayTitle">Rose Day 🌹</div>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/rose.jpg" alt="Rose Day">
     </div>
-    <div class="bottomBar">
-      <button class="yesBtn nextSmall" onclick="goNext('screen3')">Next ➜</button>
+    <div class="textBox">
+      <p class="dayText">
+        A rose for my favorite person ❤️<br><br>
+        <strong>“I’d still choose you first every single day.”</strong>
+      </p>
     </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen3')">Next ➜</button>
   </div>
 </div>
 
 <!-- PROPOSE DAY -->
 <div class="card hidden" id="screen3">
-  <div class="lockWrap">
-    <div class="dayTitle">Propose Day 💍</div>
-    <div class="dayGrid">
-      <div class="imgBox">
-        <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/purpose.jpg" alt="Propose Day">
-      </div>
-      <div class="textBox">
-        <p class="dayText"><strong>I choose you for all my tomorrows…</strong></p>
-      </div>
+  <div class="dayTitle">Propose Day 💍</div>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/purpose.jpg" alt="Propose Day">
     </div>
-    <div class="bottomBar">
-      <button class="yesBtn nextSmall" onclick="goNext('screen4')">Next ➜</button>
+    <div class="textBox">
+      <p class="dayText"><strong>I choose you for all my tomorrows…</strong></p>
     </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen4')">Next ➜</button>
   </div>
 </div>
 
 <!-- CHOCOLATE DAY -->
 <div class="card hidden" id="screen4">
-  <div class="lockWrap">
-    <div class="dayTitle">Chocolate Day 🍫</div>
-    <div class="dayGrid">
-      <div class="imgBox">
-        <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/chocolate.jpg" alt="Chocolate Day">
-      </div>
-      <div class="textBox">
-        <p class="dayText"><strong>You make even the ordinary feel sweet.</strong></p>
-      </div>
+  <div class="dayTitle">Chocolate Day 🍫</div>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/chocolate.jpg" alt="Chocolate Day">
     </div>
-    <div class="bottomBar">
-      <button class="yesBtn nextSmall" onclick="goNext('screen5')">Next ➜</button>
+    <div class="textBox">
+      <p class="dayText"><strong>You make even the ordinary feel sweet.</strong></p>
     </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen5')">Next ➜</button>
   </div>
 </div>
 
 <!-- TEDDY DAY -->
 <div class="card hidden" id="screen5">
-  <div class="lockWrap">
-    <div class="dayTitle">Teddy Day 🧸</div>
-    <div class="dayGrid">
-      <div class="imgBox">
-        <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/teddy.jpg" alt="Teddy Day">
-      </div>
-      <div class="textBox">
-        <p class="dayText">
-          If I could, I’d send you a teddy that hugs like me 🧸<br><br>
-          <strong>Until then… consider this a warm squeeze.</strong>
-        </p>
-      </div>
+  <div class="dayTitle">Teddy Day 🧸</div>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/teddy.jpg" alt="Teddy Day">
     </div>
-    <div class="bottomBar">
-      <button class="yesBtn nextSmall" onclick="goNext('screen6')">Next ➜</button>
+    <div class="textBox">
+      <p class="dayText">
+        If I could, I’d send you a teddy that hugs like me 🧸<br><br>
+        <strong>Until then… consider this a warm squeeze.</strong>
+      </p>
     </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen6')">Next ➜</button>
   </div>
 </div>
 
 <!-- PROMISE DAY -->
 <div class="card hidden" id="screen6">
-  <div class="lockWrap">
-    <div class="dayTitle">Promise Day 🤞</div>
-    <div class="dayGrid">
-      <div class="imgBox">
-        <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/promise.jpg" alt="Promise Day">
-      </div>
-      <div class="textBox">
-        <p class="dayText"><strong>Stay with me a bit longer ❤️…</strong></p>
-      </div>
+  <div class="dayTitle">Promise Day 🤞</div>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/promise.jpg" alt="Promise Day">
     </div>
-    <div class="bottomBar">
-      <button class="yesBtn nextSmall" onclick="goNext('screen7')">Next ➜</button>
+    <div class="textBox">
+      <p class="dayText"><strong>Stay with me a bit longer ❤️…</strong></p>
     </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen7')">Next ➜</button>
   </div>
 </div>
 
 <!-- HUG DAY -->
 <div class="card hidden" id="screen7">
-  <div class="lockWrap">
-    <div class="dayTitle">Hug Day 🤍</div>
-    <div class="dayGrid">
-      <div class="imgBox">
-        <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/hug.jpg" alt="Hug Day">
-      </div>
-      <div class="textBox">
-        <p class="dayText"><strong>Peace feels like you ❤️…</strong></p>
-      </div>
+  <div class="dayTitle">Hug Day 🤍</div>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/hug.jpg" alt="Hug Day">
     </div>
-    <div class="bottomBar">
-      <button class="yesBtn nextSmall" onclick="goNext('screen8')">Next ➜</button>
+    <div class="textBox">
+      <p class="dayText"><strong>Peace feels like you ❤️…</strong></p>
     </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen8')">Next ➜</button>
   </div>
 </div>
 
 <!-- KISS DAY -->
 <div class="card hidden" id="screen8">
-  <div class="lockWrap">
-    <div class="dayTitle">Kiss Day 😘</div>
-    <div class="dayGrid">
-      <div class="imgBox">
-        <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/kiss.jpg" alt="Kiss Day">
-      </div>
-      <div class="textBox">
-        <p class="dayText"><strong>Still falling for you.</strong></p>
-      </div>
+  <div class="dayTitle">Kiss Day 😘</div>
+  <div class="dayGrid">
+    <div class="imgBox">
+      <img class="dayImg" src="https://raw.githubusercontent.com/dalli0722-droid/valentine/main/kiss.jpg" alt="Kiss Day">
     </div>
-    <div class="bottomBar">
-      <button class="yesBtn nextSmall" onclick="goNext('screen9')">Next ➜</button>
+    <div class="textBox">
+      <p class="dayText"><strong>Still falling for you.</strong></p>
     </div>
+  </div>
+  <div class="bottomBar">
+    <button class="yesBtn nextSmall" onclick="show('screen9')">Next ➜</button>
   </div>
 </div>
 
 <!-- VALENTINE (YES/NO + moving NO + messages) -->
 <div class="card hidden" id="screen9">
-  <div class="lockWrap">
-    <div class="dayTitle">Valentine’s Day 💘</div>
-    <p class="dayText" style="text-align:center;">
-      Now to the question of the day...<br><br>
-      <strong>Will you be my Valentine?🥹</strong>
-    </p>
+  <div class="dayTitle">Valentine’s Day 💘</div>
+  <p class="dayText" style="text-align:center;">
+    Now to the question of the day...<br><br>
+    <strong>Will you be my Valentine?🥹</strong>
+  </p>
 
-    <div class="arena" id="arenaV">
-      <div class="row" id="rowV">
-        <button class="yesBtn bigBtn" id="yesV">Yes 💖</button>
-        <button class="noBtn bigBtn" id="noV">No 😔</button>
-      </div>
+  <div class="arena" id="arenaV">
+    <div class="row" id="rowV">
+      <button class="yesBtn bigBtn" id="yesV">Yes 💖</button>
+      <button class="noBtn bigBtn" id="noV">No 😔</button>
     </div>
-
-    <div class="msg" id="msgV">Wrong answer 😅 Try again</div>
   </div>
+
+  <div class="msg" id="msgV">Wrong answer 😅 Try again</div>
 </div>
 
 <!-- FINAL PAGE -->
@@ -397,84 +350,10 @@
 </div>
 
 <script>
-  // ===== Unlock schedule for 2026 (CST/Chicago) =====
-  const unlockSchedule = {
-    screen2: "2026-02-07", // Rose Day
-    screen3: "2026-02-08", // Propose Day
-    screen4: "2026-02-09", // Chocolate Day
-    screen5: "2026-02-10", // Teddy Day
-    screen6: "2026-02-11", // Promise Day
-    screen7: "2026-02-12", // Hug Day
-    screen8: "2026-02-13", // Kiss Day
-    screen9: "2026-02-14"  // Valentine's Day
-  };
-
-  function getTodayISO(){
-    // Optional test: add ?date=2026-02-10 to your URL
-    const params = new URLSearchParams(location.search);
-    const fake = params.get("date");
-    if (fake && /^\d{4}-\d{2}-\d{2}$/.test(fake)) return fake;
-
-    // Force CST/Chicago date
-    const parts = new Intl.DateTimeFormat("en-CA", {
-      timeZone: "America/Chicago",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit"
-    }).formatToParts(new Date());
-
-    const y = parts.find(p => p.type === "year").value;
-    const m = parts.find(p => p.type === "month").value;
-    const d = parts.find(p => p.type === "day").value;
-    return `${y}-${m}-${d}`;
-  }
-
-  function isUnlocked(screenId){
-    const today = getTodayISO();
-    const unlock = unlockSchedule[screenId];
-    if (!unlock) return true;
-    return today >= unlock;
-  }
-
-  function attachLockOverlay(screenId){
-    const screen = document.getElementById(screenId);
-    if (!screen) return;
-
-    const wrap = screen.querySelector(".lockWrap");
-    if (!wrap) return;
-
-    const existing = wrap.querySelector(".lockOverlay");
-    if (existing) existing.remove();
-
-    if (isUnlocked(screenId)) return;
-
-    const unlock = unlockSchedule[screenId];
-    const overlay = document.createElement("div");
-    overlay.className = "lockOverlay";
-    overlay.innerHTML = `
-      <div class="lockBox">
-        <p class="lockTitle">Locked for now 🔒</p>
-        <p class="lockText">Open this one on <strong>${unlock}</strong> 💖</p>
-      </div>
-    `;
-    wrap.appendChild(overlay);
-  }
-
-  function applyLocks(){
-    Object.keys(unlockSchedule).forEach(attachLockOverlay);
-  }
-
   function show(id){
     document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
-    applyLocks();
-    attachLockOverlay(id);
     window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  function goNext(nextId){
-    // show it either way; locked overlay will appear if needed
-    show(nextId);
   }
 
   function flash(el, ms=1000){
@@ -525,6 +404,7 @@
     const n = noV.getBoundingClientRect();
     const y = yesV.getBoundingClientRect();
 
+    // Yes position relative to arena
     const yesTop = y.top - a.top;
     const yesBottom = yesTop + y.height;
 
@@ -532,6 +412,7 @@
     const maxX = Math.max(padding, a.width - n.width - padding);
     const maxY = Math.max(padding, a.height - n.height - padding);
 
+    // Forbidden vertical zone around Yes (avoid overlapping)
     const buffer = 26;
     const forbiddenTop = yesTop - buffer;
     const forbiddenBottom = yesBottom + buffer;
@@ -542,6 +423,7 @@
       yPos = padding + Math.random() * (maxY - padding);
       tries++;
 
+      // If the No button is NOT in the forbidden band, accept.
       if (yPos + n.height < forbiddenTop || yPos > forbiddenBottom) break;
     } while (tries < 150);
 
@@ -558,7 +440,7 @@
   });
 
   yesV.addEventListener('click', () => {
-    // Reset NO button state
+    // Reset NO button state (keeps things clean)
     noIsFree = false;
     noClickCount = 0;
     msgV.textContent = noMessages[0];
@@ -572,11 +454,8 @@
 
     show('screen10');
   });
-
-  // initial lock state
-  applyLocks();
 </script>
 
 </body>
 </html>
-
+-->
